@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  background-color: var(--cor0);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+span {
+  display: inline-block;
+}
+
+/* UTILITARIO */
+
+.c0 {
+  color: var(--cor0);
+}
+
+.c1 {
+  color: var(--cor1);
+}
+
+.c2 {
+  color: var(--cor2);
+}
+
+.c3 {
+  color: var(--cor3);
+}
+
+/* UTILITARIO */
+
+.container {
+  max-width: 500px;
+  height: 500px;
+  padding: 10px;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.games-container {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.game {
+  width: 100%;
+  height: 100px;
+  border: 4px dashed var(--cor3);
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: default;
+}
+
+.link-game {
+  font-size: 1.5rem;
+  margin-left: 20px;
+}
+
+.game:before {
+  content: ">";
+  font-size: 3rem;
+  position: absolute;
+  left: -48px;
+  color: var(--cor2);
+  display: none;
+}
+
+.game.active:before {
+  display: block;
+}
+
+.game.active {
+  border-color: var(--cor2);
+}
+
+.game.active .link-game {
+  color: var(--cor2);
+}
+
+.tutorial {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

@@ -3,13 +3,13 @@ const options = [0, 1, 2];
 let selected = 0;
 
 btns[selected].classList.add("active");
-btns.forEach((btn) => {
-  btn.addEventListener("click", handleClick);
-});
+// btns.forEach((btn) => {
+//   btn.addEventListener("click", handleClick);
+// });
 
-function handleClick(event) {
-  event.preventDefault();
-}
+// function handleClick(event) {
+//   event.preventDefault();
+// }
 
 window.addEventListener("keydown", changeSelected);
 
