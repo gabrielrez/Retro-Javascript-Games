@@ -13,6 +13,8 @@ function changeSelected(event) {
   } else if (event.keyCode == 40 && selected != options.length - 1) {
     console.log("down");
     selected += 1;
+  } else if (event.keyCode == 13) {
+    window.open(btns[selected].url);
   }
   btns.forEach((btn) => {
     btn.classList.remove("active");
