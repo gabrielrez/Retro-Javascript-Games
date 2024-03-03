@@ -3,16 +3,26 @@ const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d");
 const size = 25;
 const snake = [
-  { x: 175, y: 175 },
-  { x: 175, y: 200 },
+  { x: 225, y: 225 },
+  { x: 225, y: 250 },
 ];
+const food = {
+  x: 75,
+  y: 50,
+  color: "#063506",
+};
 let direction, loopId;
 
 const drawSnake = () => {
   ctx.fillStyle = snakeColor;
-  snake.forEach((position, index) => {
+  snake.forEach((position) => {
     ctx.fillRect(position.x, position.y, size, size);
   })
+}
+
+const drawFood = () => {
+  ctx.fillStyle = food.color;
+  ctx.fillRect(food.x, food.y, size, size);
 }
 
 const moveSnake = () => {
@@ -41,7 +51,9 @@ const moveSnake = () => {
 
 const gameLoop = () => {
   clearInterval(loopId);
-  ctx.clearRect(0, 0, 400, 400);
+  ctx.clearRect(0, 0, 450, 450);
+  drawGrid();
+  drawFood();
   moveSnake();
   drawSnake();
   loopId = setTimeout(() => {
@@ -49,7 +61,23 @@ const gameLoop = () => {
   }, 200);
 };
 
-// gameLoop();
+const drawGrid = () => {
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#06350611";
+  for (let i = 25; i < canvas.width; i += 25) {
+    ctx.beginPath();
+    ctx.lineTo(i, 0);
+    ctx.lineTo(i, 450);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.lineTo(0, i);
+    ctx.lineTo(450, i);
+    ctx.stroke();
+  }
+}
+
+gameLoop();
+drawGrid();
 
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowUp" && direction != "down") {
