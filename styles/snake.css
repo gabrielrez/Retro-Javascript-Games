@@ -1,4 +1,8 @@
 canvas {
-  margin-top: 40px;
+  margin-top: 16px;
   border: 4px dashed var(--cor3);
+}
+
+.score {
+  font-size: 1.5rem;
 }

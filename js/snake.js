@@ -7,12 +7,21 @@ const snake = [
   { x: 225, y: 250 },
 ];
 const food = {
-  x: 75,
-  y: 50,
+  x: randomPosition(),
+  y: randomPosition(),
   color: "#063506",
 };
 let direction, loopId;
 direction = "up";
+
+function randomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+function randomPosition() {
+  const number = randomNumber(0, canvas.width - size);
+  return Math.round(number / size) * size;
+}
 
 function drawSnake() {
   ctx.fillStyle = snakeColor;
