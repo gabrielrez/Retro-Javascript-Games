@@ -1,5 +1,6 @@
 @import url("styles/main.css");
 @import url("styles/snake.css");
+@import url("styles/pong.css");
 
 :root {
   --cor0: #9CBC06;
