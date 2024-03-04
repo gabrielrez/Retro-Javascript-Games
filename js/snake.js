@@ -4,14 +4,13 @@ const ctx = canvas.getContext("2d");
 const size = 25;
 const snake = [
   { x: 225, y: 225 },
-  { x: 225, y: 250 },
 ];
 const food = {
   x: randomPosition(),
   y: randomPosition(),
   color: "#063506",
 };
-let direction, loopId;
+let direction, loopId, score;
 direction = "up";
 
 function randomNumber(min, max) {
@@ -59,6 +58,45 @@ function moveSnake() {
   }
 }
 
+function checkEat() {
+  const head = snake[snake.length - 1];
+
+  if (head.x == food.x && head.y == food.y) {
+    snake.push(head);
+    let x = randomPosition();
+    let y = randomPosition();
+    while (snake.find((position) => position.x == x && position.y == y)) {
+      x = randomPosition();
+      y = randomPosition();
+    }
+    food.x = x;
+    food.y = y;
+    updateScore();
+  }
+}
+
+function updateScore() {
+  const scoreDOM = document.querySelector(".score");
+  if (snake.length < 10) {
+    scoreDOM.innerText = "size: 0" + snake.length;
+  } else {
+    scoreDOM.innerText = "size: " + snake.length;
+  }
+}
+
+function chechColision() {
+  const head = snake[snake.length - 1];
+  const neckIndex = snake.length - 2;
+
+  const wallColision = head.x < 0 || head.x > 425 || head.y < 0 || head.y > 425;
+  const selfColision = snake.find((position, index) => {
+    return index < neckIndex && position.x == head.x && position.y == head.y;
+  });
+  if (wallColision || selfColision) {
+    window.close();
+  }
+}
+
 function gameLoop() {
   clearInterval(loopId);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -66,6 +104,9 @@ function gameLoop() {
   drawFood();
   moveSnake();
   drawSnake();
+  checkEat();
+  updateScore();
+  chechColision();
   loopId = setTimeout(() => {
     gameLoop();
   }, 150);
