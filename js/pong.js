@@ -12,7 +12,15 @@ const p2 = [
   { x: 625, y: 225 },
   { x: 625, y: 250 },
 ];
-let direction, loopId;
+const ball = {
+  x: 325,
+  y: 225,
+  color: "#063506",
+};
+let direction, loopId, ballDirection;
+ballDirection = 1;
+let p1Score = 0;
+let p2Score = 0;
 
 function drawPlayers() {
   ctx.fillStyle = pColor;
@@ -37,6 +45,48 @@ function movePlayer() {
   }
 }
 
+function moveBall() {
+  if (ballDirection == 1) {
+    ball.x += size;
+  } else if (ballDirection == 0) {
+    ball.x -= size;
+  }
+}
+
+function updateScore() {
+  const scoreDom = document.querySelector(".score");
+  scoreDom.innerText = p1Score + " vs " + p2Score;
+}
+
+function checkBallColision() {
+  if (ball.x < 0) {
+    ball.x = 325;
+    p2Score++;
+    updateScore();
+  }
+  if (ball.x > canvas.width) {
+    ball.x = 325;
+    p1Score++;
+    updateScore();
+  }
+  if (ball.x == p2[0].x - size) {
+    if (ball.y == p2[0].y || ball.y == p2[1].y || ball.y == p2[2].y) {
+      ballDirection = 0;
+    }
+  }
+  if (ball.x == p1[0].x + size) {
+    if (ball.y == p1[0].y || ball.y == p1[1].y || ball.y == p1[2].y) {
+      ballDirection = 1;
+    }
+  }
+}
+
+function checkStatusGame() {
+  if (p1Score >= 3 || p2Score >= 3) {
+    window.close();
+  }
+}
+
 function checkKey(event) {
   if (event.key == "ArrowUp") {
     direction = "up";
@@ -45,15 +95,24 @@ function checkKey(event) {
   }
 }
 
+function drawBall() {
+  ctx.fillStyle = ball.color;
+  ctx.fillRect(ball.x, ball.y, size, size);
+}
+
 function gameLoop() {
   clearInterval(loopId);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
   movePlayer();
   drawPlayers();
+  drawBall();
+  moveBall();
+  checkBallColision();
+  checkStatusGame();
   loopId = setTimeout(() => {
     gameLoop();
-  }, 75);
+  }, 100);
 }
 
 function drawGrid() {
