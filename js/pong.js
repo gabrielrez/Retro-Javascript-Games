@@ -17,10 +17,11 @@ const ball = {
   y: 225,
   color: "#063506",
 };
-let direction, loopId, ballDirection;
+let direction, loopId, ballDirection, p2Direction;
 ballDirection = 1;
 let p1Score = 0;
 let p2Score = 0;
+p2Direction = "up";
 
 function drawPlayers() {
   ctx.fillStyle = pColor;
@@ -33,13 +34,31 @@ function drawPlayers() {
   })
 }
 
-function movePlayer() {
+function moveP1() {
   if (direction == "up" && p1[0].y >= size) {
     p1.forEach((position) => {
       position.y -= size;
     })
   } else if (direction == "down" && p1[0].y <= 350) {
     p1.forEach((position) => {
+      position.y += size;
+    })
+  }
+  if (p2[0].y < 50) {
+    p2Direction = "down";
+  }
+  if (p2[2].y > 375) {
+    p2Direction = "up";
+  }
+}
+
+function moveP2() {
+  if (p2Direction == "up") {
+    p2.forEach((position) => {
+      position.y -= size;
+    })
+  } else if (p2Direction == "down") {
+    p2.forEach((position) => {
       position.y += size;
     })
   }
@@ -62,11 +81,13 @@ function checkBallColision() {
   if (ball.x < 0) {
     ball.x = 325;
     p2Score++;
+    ballDirection = 1;
     updateScore();
   }
   if (ball.x > canvas.width) {
     ball.x = 325;
     p1Score++;
+    ballDirection = 0;
     updateScore();
   }
   if (ball.x == p2[0].x - size) {
@@ -104,7 +125,8 @@ function gameLoop() {
   clearInterval(loopId);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrid();
-  movePlayer();
+  moveP1();
+  moveP2()
   drawPlayers();
   drawBall();
   moveBall();
@@ -112,7 +134,7 @@ function gameLoop() {
   checkStatusGame();
   loopId = setTimeout(() => {
     gameLoop();
-  }, 100);
+  }, 60);
 }
 
 function drawGrid() {
