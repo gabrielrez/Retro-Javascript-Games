@@ -16,11 +16,12 @@ const ball = {
   x: 325,
   y: 225,
   color: "#063506",
+  directionX: 1,
+  directionY: 1,
 };
-let direction, loopId, ballDirection, p2Direction;
-ballDirection = 1;
-let p1Score = 0;
-let p2Score = 0;
+let direction, loopId, p1Score, p2Score, p2Direction;
+p1Score = 0;
+p2Score = 0;
 p2Direction = "up";
 
 function drawPlayers() {
@@ -65,10 +66,16 @@ function moveP2() {
 }
 
 function moveBall() {
-  if (ballDirection == 1) {
+  if (ball.directionX == 1) {
     ball.x += size;
-  } else if (ballDirection == 0) {
+  } else if (ball.directionX == 0) {
     ball.x -= size;
+  }
+
+  if (ball.directionY == 1) {
+    ball.y += size;
+  } else if (ball.directionY == 0) {
+    ball.y -= size;
   }
 }
 
@@ -81,29 +88,38 @@ function checkBallColision() {
   if (ball.x < 0) {
     ball.x = 325;
     p2Score++;
-    ballDirection = 1;
+    ball.directionX = 1;
     updateScore();
   }
   if (ball.x > canvas.width) {
     ball.x = 325;
     p1Score++;
-    ballDirection = 0;
+    ball.directionX = 0;
     updateScore();
   }
-  if (ball.x == p2[0].x - size) {
-    if (ball.y == p2[0].y || ball.y == p2[1].y || ball.y == p2[2].y) {
-      ballDirection = 0;
-    }
+  if (ball.y < 25 || ball.y >= canvas.height - size) {
+    ball.directionY = 1 - ball.directionY;
   }
-  if (ball.x == p1[0].x + size) {
-    if (ball.y == p1[0].y || ball.y == p1[1].y || ball.y == p1[2].y) {
-      ballDirection = 1;
-    }
+  if (
+    ball.x >= p2[0].x - size &&
+    ball.x <= p2[0].x &&
+    ball.y >= p2[0].y &&
+    ball.y <= p2[2].y
+  ) {
+    ball.directionX = 0;
+  }
+  if (
+    ball.x <= p1[0].x + size &&
+    ball.x >= p1[0].x &&
+    ball.y >= p1[0].y &&
+    ball.y <= p1[2].y
+  ) {
+    ball.directionX = 1;
   }
 }
 
 function checkStatusGame() {
-  if (p1Score >= 3 || p2Score >= 3) {
+  if (p1Score >= 5 || p2Score >= 5) {
     window.close();
   }
 }
@@ -128,13 +144,13 @@ function gameLoop() {
   moveP1();
   moveP2()
   drawPlayers();
+  checkBallColision();
   drawBall();
   moveBall();
-  checkBallColision();
   checkStatusGame();
   loopId = setTimeout(() => {
     gameLoop();
-  }, 60);
+  }, 75);
 }
 
 function drawGrid() {
